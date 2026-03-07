@@ -1,0 +1,35 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-cloud",
+      "description": "Modern abstract cloud computing visualization",
+      "imageUrl": "https://picsum.photos/seed/cloud-hero/1200/800",
+      "imageHint": "cloud computing abstract"
+    },
+    {
+      "id": "logo-acme",
+      "description": "Acme Corp Logo",
+      "imageUrl": "https://picsum.photos/seed/acme/200/80",
+      "imageHint": "corporate logo"
+    },
+    {
+      "id": "logo-globex",
+      "description": "Globex Corp Logo",
+      "imageUrl": "https://picsum.photos/seed/globex/200/80",
+      "imageHint": "tech company logo"
+    },
+    {
+      "id": "logo-soylent",
+      "description": "Soylent Corp Logo",
+      "imageUrl": "https://picsum.photos/seed/soylent/200/80",
+      "imageHint": "enterprise logo"
+    },
+    {
+      "id": "advisor-avatar",
+      "description": "AI Assistant Avatar",
+      "imageUrl": "https://picsum.photos/seed/ai-bot/100/100",
+      "imageHint": "robot avatar"
+    }
+  ]
+}
