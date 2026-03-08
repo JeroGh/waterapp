@@ -2,8 +2,8 @@ import type {Metadata} from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'AuraCloud | Enterprise Cloud Solutions',
-  description: 'Scalable, secure, and intelligent cloud infrastructure designed for modern enterprise businesses.',
+  title: 'AquaFlow | Modern Water Utility Management',
+  description: 'Manage your water account, pay bills with Mobile Money, and report service issues instantly.',
 };
 
 export default function RootLayout({

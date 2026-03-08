@@ -3,9 +3,9 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Droplets, AlertTriangle, CreditCard, Calendar } from "lucide-react";
+import { Droplets, AlertTriangle, Wallet, Calendar } from "lucide-react";
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
 
 const usageData = [
   { month: "Jan", usage: 4.2 },
@@ -22,17 +22,17 @@ export function Dashboard() {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight text-primary">Welcome Back, Alex</h1>
-          <p className="text-muted-foreground">Here's a summary of your water account.</p>
+          <p className="text-muted-foreground">Here's a summary of your water account in Ghana Cedis.</p>
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-10">
           <Card className="border-l-4 border-l-orange-500">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium uppercase text-muted-foreground">Current Balance</CardTitle>
-              <CreditCard className="h-4 w-4 text-orange-500" />
+              <Wallet className="h-4 w-4 text-orange-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$124.50</div>
+              <div className="text-2xl font-bold">GH₵ 450.50</div>
               <p className="text-xs text-muted-foreground mt-1">Due in 4 days</p>
               <Badge variant="destructive" className="mt-3">Disconnection Risk</Badge>
             </CardContent>
@@ -104,7 +104,7 @@ export function Dashboard() {
                   <div className="w-2 h-2 rounded-full bg-red-500 mt-2 shrink-0" />
                   <div>
                     <p className="text-sm font-medium">Payment Overdue</p>
-                    <p className="text-xs text-muted-foreground">Your bill from Sep 10 is past due. Avoid disconnection by paying today.</p>
+                    <p className="text-xs text-muted-foreground">Your bill from Sep 10 is past due. Avoid disconnection by paying via MoMo today.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -117,8 +117,8 @@ export function Dashboard() {
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
                   <div>
-                    <p className="text-sm font-medium">Auto-Pay Enrolled</p>
-                    <p className="text-xs text-muted-foreground">Your account is now set for automatic monthly payments.</p>
+                    <p className="text-sm font-medium">MoMo Auto-Pay Enrolled</p>
+                    <p className="text-xs text-muted-foreground">MTN Mobile Money successfully set for automatic payments.</p>
                   </div>
                 </div>
               </div>
