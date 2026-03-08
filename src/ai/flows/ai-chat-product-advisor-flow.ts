@@ -1,87 +1,70 @@
 'use server';
 /**
- * @fileOverview An AI Cloud Solution Advisor flow.
+ * @fileOverview An AI Water Utility Assistant flow.
  *
- * - aiChatProductAdvisor - A function that handles the interaction with the AI Cloud Solution Advisor.
- * - AIChatProductAdvisorInput - The input type for the aiChatProductAdvisor function.
- * - AIChatProductAdvisorOutput - The return type for the aiChatProductAdvisor function.
+ * - aiChatWaterAssistant - Handles queries about billing, leaks, and service status.
  */
 
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
-// Input Schema: User's message and conversation history
 const ChatMessageSchema = z.object({
   role: z.enum(['user', 'model']).describe('The role of the message sender.'),
   content: z.string().describe('The content of the message.'),
 });
 
-const AIChatProductAdvisorInputSchema = z.object({
-  message: z.string().describe('The user\'s current message or question.'),
-  history: z.array(ChatMessageSchema).default([]).describe('The conversation history between the user and the AI advisor.'),
+const AIWaterAssistantInputSchema = z.object({
+  message: z.string().describe('The user\'s current message.'),
+  history: z.array(ChatMessageSchema).default([]),
 });
-export type AIChatProductAdvisorInput = z.infer<typeof AIChatProductAdvisorInputSchema>;
+export type AIWaterAssistantInput = z.infer<typeof AIWaterAssistantInputSchema>;
 
-// Output Schema: AI's response, potential product suggestions, and a flag for final recommendation
-const AIChatProductAdvisorOutputSchema = z.object({
-  response: z.string().describe('The AI advisor\'s conversational response or final recommendation message.'),
-  suggestedProducts: z.array(z.string()).describe('An array of cloud product names suggested by the AI. This will be empty if the AI is still gathering information.'),
-  isRecommendationFinal: z.boolean().describe('A flag indicating if the AI has made a final product recommendation. True if recommendations are provided, false otherwise.'),
+const AIWaterAssistantOutputSchema = z.object({
+  response: z.string().describe('The AI assistant\'s response.'),
+  actionRequired: z.enum(['none', 'pay_bill', 'report_leak', 'check_status']).default('none'),
+  isIssueUrgent: z.boolean().default(false),
 });
-export type AIChatProductAdvisorOutput = z.infer<typeof AIChatProductAdvisorOutputSchema>;
+export type AIWaterAssistantOutput = z.infer<typeof AIWaterAssistantOutputSchema>;
 
-export async function aiChatProductAdvisor(input: AIChatProductAdvisorInput): Promise<AIChatProductAdvisorOutput> {
-  return aiChatProductAdvisorFlow(input);
+export async function aiChatWaterAssistant(input: AIWaterAssistantInput): Promise<AIWaterAssistantOutput> {
+  return aiChatWaterAssistantFlow(input);
 }
 
-const productCatalog = [
-  "AuraCompute (Scalable VMs and Containers)",
-  "AuraStorage (Object, File, and Block Storage)",
-  "AuraDB (Managed Databases like PostgreSQL, MySQL, NoSQL)",
-  "AuraNetwork (VPN, Load Balancing, CDN)",
-  "AuraSecurity (DDoS Protection, IAM, WAF)",
-  "AuraAnalytics (Data Warehousing, BI Tools)",
-  "AuraAI (ML Platforms, Vision AI, Natural Language Processing)",
-  "AuraDevOps (CI/CD, Monitoring, Logging)",
-  "AuraConnect (Hybrid Cloud Solutions)",
-  "AuraEdge (Edge Computing Services)"
-];
-
 const prompt = ai.definePrompt({
-  name: 'aiChatProductAdvisorPrompt',
-  input: { schema: AIChatProductAdvisorInputSchema },
-  output: { schema: AIChatProductAdvisorOutputSchema },
-  prompt: `You are an AI Cloud Solution Advisor for AuraCloud, a leading cloud provider for enterprise businesses. Your goal is to help enterprise business owners quickly find the most suitable cloud products for their specific business needs without them having to manually browse through all options.
+  name: 'aiChatWaterAssistantPrompt',
+  input: { schema: AIWaterAssistantInputSchema },
+  output: { schema: AIWaterAssistantOutputSchema },
+  prompt: `You are the AquaFlow Virtual Assistant. Your goal is to help customers with their water utility needs.
 
-AuraCloud offers the following key products:
-${productCatalog.map(p => `- ${p}`).join('\n')}
+Common Scenarios:
+1. Billing: Customers ask about their balance or how to pay.
+2. Leaks/Issues: Customers report water bursts, low pressure, or billing errors.
+3. Outages: Customers ask why they have no water.
+4. Disconnections: Customers are worried about service being cut.
 
-You must follow these rules:
-1. Start by greeting the user and asking them about their business, industry, and main challenges or goals they hope to solve with cloud services.
-2. Ask clarifying questions to understand their needs deeply, such as their current infrastructure, budget, technical expertise, compliance requirements, and expected scale.
-3. Once you have enough information, suggest 1-3 most suitable products from the AuraCloud product catalog.
-4. When making a recommendation, set 'isRecommendationFinal' to true and list the recommended products in the 'suggestedProducts' array.
-5. If you are still gathering information, 'isRecommendationFinal' should be false and 'suggestedProducts' should be an empty array.
-6. Do not recommend products that are not explicitly listed in the 'AuraCloud offers the following key products' list.
-7. Your responses should be professional, helpful, and concise.
+Context: 
+- Current Service Alerts: Maintenance in North District on Friday. 
+- Disconnection Policy: Notice sent after 15 days of non-payment.
+
+Instructions:
+- Be empathetic and clear.
+- If a user reports a leak, mark actionRequired as 'report_leak' and set isIssueUrgent if it sounds like a major burst.
+- If they ask about paying, suggest 'pay_bill'.
+- If they have no water, suggest 'check_status'.
 
 Conversation History:
 {{#each history}}
-  {{#if (eq role "user")}}
-    User: {{content}}
-  {{else}}
-    Advisor: {{content}}
-  {{/if}}
+  {{role}}: {{content}}
 {{/each}}
 User: {{{message}}}
-Advisor: `,
+Assistant: `,
 });
 
-const aiChatProductAdvisorFlow = ai.defineFlow(
+const aiChatWaterAssistantFlow = ai.defineFlow(
   {
-    name: 'aiChatProductAdvisorFlow',
-    inputSchema: AIChatProductAdvisorInputSchema,
-    outputSchema: AIChatProductAdvisorOutputSchema,
+    name: 'aiChatWaterAssistantFlow',
+    inputSchema: AIWaterAssistantInputSchema,
+    outputSchema: AIWaterAssistantOutputSchema,
   },
   async (input) => {
     const { output } = await prompt(input);
