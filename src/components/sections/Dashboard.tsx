@@ -26,9 +26,9 @@ export function Dashboard() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-10">
-          <Card className="border-l-4 border-l-orange-500">
+          <Card className="border-l-4 border-l-orange-500 shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium uppercase text-muted-foreground">Current Balance</CardTitle>
+              <CardTitle className="text-sm font-medium uppercase text-muted-foreground tracking-wider">Current Balance</CardTitle>
               <Wallet className="h-4 w-4 text-orange-500" />
             </CardHeader>
             <CardContent>
@@ -38,9 +38,9 @@ export function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium uppercase text-muted-foreground">Monthly Usage</CardTitle>
+              <CardTitle className="text-sm font-medium uppercase text-muted-foreground tracking-wider">Monthly Usage</CardTitle>
               <Droplets className="h-4 w-4 text-blue-500" />
             </CardHeader>
             <CardContent>
@@ -50,9 +50,9 @@ export function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium uppercase text-muted-foreground">Next Reading</CardTitle>
+              <CardTitle className="text-sm font-medium uppercase text-muted-foreground tracking-wider">Next Reading</CardTitle>
               <Calendar className="h-4 w-4 text-green-500" />
             </CardHeader>
             <CardContent>
@@ -61,9 +61,9 @@ export function Dashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-primary text-primary-foreground">
+          <Card className="bg-primary text-primary-foreground shadow-sm">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-sm font-medium uppercase text-primary-foreground/70">Service Alerts</CardTitle>
+              <CardTitle className="text-sm font-medium uppercase text-primary-foreground/70 tracking-wider">Service Alerts</CardTitle>
               <AlertTriangle className="h-4 w-4 text-secondary" />
             </CardHeader>
             <CardContent>
@@ -73,52 +73,62 @@ export function Dashboard() {
           </Card>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
-          <Card className="lg:col-span-2">
+        <div className="grid gap-8 lg:grid-cols-3">
+          <Card className="lg:col-span-2 shadow-sm">
             <CardHeader>
               <CardTitle>Usage History</CardTitle>
               <CardDescription>Your water consumption over the last 6 months (kiloliters)</CardDescription>
             </CardHeader>
-            <CardContent className="h-[300px]">
-              <ChartContainer config={{ usage: { label: "Usage", color: "hsl(var(--primary))" } }}>
+            <CardContent className="h-[350px] pb-6">
+              <ChartContainer config={{ usage: { label: "Usage", color: "hsl(var(--primary))" } }} className="h-full w-full">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={usageData}>
-                    <XAxis dataKey="month" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} />
-                    <Tooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="usage" fill="var(--color-usage)" radius={[4, 4, 0, 0]} />
+                  <BarChart data={usageData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    <XAxis 
+                      dataKey="month" 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                      dy={10}
+                    />
+                    <YAxis 
+                      axisLine={false} 
+                      tickLine={false} 
+                      tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                    />
+                    <Tooltip content={<ChartTooltipContent />} cursor={{ fill: 'hsl(var(--muted)/0.5)' }} />
+                    <Bar dataKey="usage" fill="var(--color-usage)" radius={[4, 4, 0, 0]} barSize={40} />
                   </BarChart>
                 </ResponsiveContainer>
               </ChartContainer>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="shadow-sm">
             <CardHeader>
               <CardTitle>Recent Activity</CardTitle>
               <CardDescription>Stay updated on your account</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-red-500 mt-2 shrink-0" />
-                  <div>
-                    <p className="text-sm font-medium">Payment Overdue</p>
-                    <p className="text-xs text-muted-foreground">Your bill from Sep 10 is past due. Avoid disconnection by paying via MoMo today.</p>
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-2 h-2 rounded-full bg-red-500 mt-2 shrink-0 shadow-[0_0_8px_rgba(239,68,68,0.5)]" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-bold">Payment Overdue</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Your bill from Sep 10 is past due. Avoid disconnection by paying via MoMo today.</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-blue-500 mt-2 shrink-0" />
-                  <div>
-                    <p className="text-sm font-medium">Maintenance Alert</p>
-                    <p className="text-xs text-muted-foreground">Water supply interrupted on Oct 15, 2PM - 4PM for repairs.</p>
+                <div className="flex items-start gap-4">
+                  <div className="w-2 h-2 rounded-full bg-blue-500 mt-2 shrink-0 shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-bold">Maintenance Alert</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">Water supply interrupted on Oct 15, 2PM - 4PM for repairs.</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0" />
-                  <div>
-                    <p className="text-sm font-medium">MoMo Auto-Pay Enrolled</p>
-                    <p className="text-xs text-muted-foreground">MTN Mobile Money successfully set for automatic payments.</p>
+                <div className="flex items-start gap-4">
+                  <div className="w-2 h-2 rounded-full bg-green-500 mt-2 shrink-0 shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
+                  <div className="space-y-1">
+                    <p className="text-sm font-bold">MoMo Auto-Pay Enrolled</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">MTN Mobile Money successfully set for automatic payments.</p>
                   </div>
                 </div>
               </div>
