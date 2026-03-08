@@ -2,8 +2,8 @@ import type {Metadata} from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'AquaFlow | Modern Water Utility Management',
-  description: 'Manage your water account, pay bills with Mobile Money, and report service issues instantly.',
+  title: 'GWCL AquaFlow | Ghana Water Company Limited',
+  description: 'Official digital portal for Ghana Water Company. Manage your water account, pay bills via Mobile Money, and report bursts instantly.',
 };
 
 export default function RootLayout({
