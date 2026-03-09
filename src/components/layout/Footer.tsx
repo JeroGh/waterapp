@@ -1,7 +1,16 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Droplets, Mail, Phone, MapPin, Twitter, Facebook, Instagram } from "lucide-react";
 import Link from "next/link";
 
 export function Footer() {
+  const [year, setYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
+
   return (
     <footer className="bg-primary text-primary-foreground py-16">
       <div className="container mx-auto px-4 sm:px-6">
@@ -52,7 +61,7 @@ export function Footer() {
         </div>
         
         <div className="border-t border-primary-foreground/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-primary-foreground/50">
-          <p>© {new Date().getFullYear()} Ghana Water Company Limited. All rights reserved.</p>
+          <p>© {year || "2024"} Ghana Water Company Limited. All rights reserved.</p>
           <div className="flex gap-6">
             <Link href="#" className="hover:text-primary-foreground transition-colors">Privacy Policy</Link>
             <Link href="#" className="hover:text-primary-foreground transition-colors">Terms of Service</Link>

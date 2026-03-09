@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -17,6 +18,12 @@ const usageData = [
 ];
 
 export function Dashboard() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <section id="dashboard" className="py-12 bg-muted/30">
       <div className="container mx-auto px-4 sm:px-6">
@@ -84,26 +91,32 @@ export function Dashboard() {
               <CardDescription>Measured in kiloliters (kL) for Accra District</CardDescription>
             </CardHeader>
             <CardContent className="h-[350px] px-2 sm:px-6 pb-6">
-              <ChartContainer config={{ usage: { label: "Water Usage", color: "hsl(var(--primary))" } }} className="h-full w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={usageData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                    <XAxis 
-                      dataKey="month" 
-                      axisLine={false} 
-                      tickLine={false} 
-                      tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                      dy={10}
-                    />
-                    <YAxis 
-                      axisLine={false} 
-                      tickLine={false} 
-                      tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-                    />
-                    <Tooltip content={<ChartTooltipContent />} cursor={{ fill: 'hsl(var(--muted)/0.3)' }} />
-                    <Bar dataKey="usage" fill="var(--color-usage)" radius={[6, 6, 0, 0]} barSize={40} />
-                  </BarChart>
-                </ResponsiveContainer>
-              </ChartContainer>
+              {mounted ? (
+                <ChartContainer config={{ usage: { label: "Water Usage", color: "hsl(var(--primary))" } }} className="h-full w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={usageData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <XAxis 
+                        dataKey="month" 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                        dy={10}
+                      />
+                      <YAxis 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                      />
+                      <Tooltip content={<ChartTooltipContent />} cursor={{ fill: 'hsl(var(--muted)/0.3)' }} />
+                      <Bar dataKey="usage" fill="var(--color-usage)" radius={[6, 6, 0, 0]} barSize={40} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+              ) : (
+                <div className="h-full w-full flex items-center justify-center bg-muted/10 rounded-lg">
+                  <p className="text-xs text-muted-foreground animate-pulse">Loading usage history...</p>
+                </div>
+              )}
             </CardContent>
           </Card>
 
